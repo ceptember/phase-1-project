@@ -1,6 +1,6 @@
 
 function handleData (){
-    fetch('http://localhost:3000/data')
+    fetch('db.json/data')
         .then(response => response.json())
         .then(data => {
             
