@@ -1,6 +1,6 @@
 
 function handleData (){
-    fetch('db.json/data')
+    fetch('data.json')
         .then(response => response.json())
         .then(data => {
             
