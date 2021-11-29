@@ -1,17 +1,106 @@
 <!DOCTYPE html>
 <html>
     <head>
+         <!-- Required tags for Bootstrap -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- My Stylesheet-->
         <link rel="stylesheet" href="style.css">
+        <!-- Web fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@500&display=swap" rel="stylesheet">
+       <!-- script -->
         <script src="index.js" defer></script>
+        <!-- D3 to make bar chart for COVID data -->
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+
+        <title>Phase 1 Project - Christy Perozzi</title>
     </head>
     <body>
-        <h1>
-            Hello World
-        </h1>
-        <h2>Test page for loading data from a REST API</h2>
-        <div>
-            <h3>Data:</h3>
-            <ul id = "list"></ul>
-        </div>
+        <div class="container-fluid">
+            <div class ="jumbotron">
+                <h1> Good Morning</h1>
+                <h2>Everything you need to start your day</h2>
+                <form id="changelocation">
+                <input type ="text" name="zipcode" id="zipcode" placeholder ="zipcode">
+                <input type="submit" class="submit">
+                </form>
+                <div id ="locationtext"></div>
+            </div>
+
+            <div class="row">
+
+                <div class ="col-md-4 order-md-2" >
+                    <div id = "todo">
+                        <h2>Plan Your Day</h2>
+                        <p>Create your to-do list or write down any notes here.</p>
+                        <form id = "todoform">
+                            <input type="text" name="newtodo" id="newtodo" placeholder="Add list item">
+                            <input type="submit" class="submit">
+                            <p id="offline"> This front-end demo is running in offline mode; items entered are not saved. </p>
+                        </form>
+                        <ul>
+                        </ul>
+                    </div>
+                  
+                </div>
+
+                <div class ="col-md-4 order-md-1" >
+                    <div class = 'infobox' id="weather">
+                        <h3>Weather</h3>
+                        <div id="weatherholder"></div>
+                        
+                    </div>
+
+                    <div class = 'infobox' id="covid">
+                        <h3>COVID Cases</h3>
+                        <span id="covidText"></span><br>
+                        <span>New cases this week:</span>
+                        <div id="chartdiv" ></div>
+                        
+                        <ul class = "list"></ul>
+                    </div>
+                </div>
+
+
+
+                <div class ="col-md-4 order-md-3" >
+                    <div class = 'infobox' id="news">
+                        <h3>World News</h3>
+                       
+                       
+                        <ul class = "list"></ul>
+                    </div>
+    
+                    <div class = 'infobox' id="crypto">
+                        <h3>Cryptocurrency Prices:</h3>
+
+                        <ul class = "list"></ul>
+                    </div>
+    
+                </div>
+
+            </div>    
+
+            
+            
+           
+
+            <footer >
+                 
+                This project was completed by <a href="https://ceptember.github.io/project-personal-website/" target="_blank">Christy Perozzi </a> for Flatiron School's Software Engineering program <br>
+                Data Sources: 
+                <a href="https://open-meteo.com/en/docs/geocoding-api" target="_blank">Geocoding |</a>
+                <a href="https://docs.coincap.io/" target="_blank">Crypto Rates </a> | 
+                <a href="https://github.com/cyberboysumanjay/Inshorts-News-API" target="_blank">News</a> |
+                <a href="https://open-meteo.com/en/docs " target="_blank">Weather</a> |
+                <a href="https://disease.sh" target="_blank">COVID Rates</a><br>
+                <span id="photocredit"></span>
+                
+            </footer>
+            <br><br>
+        </div>    
     </body>
 </html>

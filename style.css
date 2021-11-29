@@ -1,3 +1,104 @@
+/*
+yellow-green D1D59F - bar chart fill
+green B3C79D -bar chart stroke
+teal 62A7AF links
+indigo 5C5B81 chart labels
+plum 745669 link hover
+lavender  B694B4
+
+
+*/
+
 body {
-    color: green; 
+    background-size:100%;
+}
+
+@media only screen and (max-width: 600px) {
+    body {
+        /* Create the parallax scrolling effect on smaller screens*/
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+    }
+  }
+
+h1 {
+    font-family: 'Open Sans', sans-serif;
+
+}
+.infobox {
+    border: 1px solid black; 
+    background-color: #FFFFFFdd;
+    margin: 10px; 
+    border-radius: 5px; 
+    padding: 10px; 
+}
+
+.jumbotron {
+    border: 1px solid black; 
+    background-color: #FFFFFFdd;
+    min-height: 200px; 
+    padding-top: 20px; 
+    margin:10px; 
+
+}
+
+footer{
+    border: 1px solid black; 
+    background-color: #FFFFFFdd;
+    margin: 10px; 
+    border-radius: 5px;
+    padding: 10px; 
+    font-size: 10pt; 
+    text-align:center; 
+}
+
+#todo{
+    border: 1px solid black; 
+    min-height: 500px; 
+    background-color: #FFFFFFcc;
+    margin: 10px; 
+    border-radius: 5px; 
+    padding: 10px; 
+
+}
+
+a {
+    color: #62A7AF
+}
+
+a:link {
+    color: #62A7AF
+}
+
+a:hover {
+    color: #745669
+}
+
+input {
+    border: 1px solid black; 
+    border-radius: 3px; 
+}
+
+input:focus{
+    outline: none; 
+    border: 1px solid #B694B4; 
+}
+
+.submit:hover{
+    background-color: #ddd; 
+}
+
+button {
+    border-radius: 3px; 
+    border: 1px solid black; 
+}
+
+button:hover{
+    background-color: #ddd; 
+}
+
+#offline{
+    color: #745669; 
 }
