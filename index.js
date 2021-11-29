@@ -1,10 +1,5 @@
 let zipcode = '10004'
 
-//ZipCodes for testing weather 
-//NYC 10004
-//San Diego 92101
-//Anchorage 99501 
-
 let urlGeo = `https://geocoding-api.open-meteo.com/v1/search?name=${zipcode}`
 let urlWSB = 'https://dashboard.nbshare.io/api/v1/apps/reddit'; 
 let urlNews = 'https://inshortsapi.vercel.app/news?category=world';
@@ -18,6 +13,8 @@ let currentWeather = ""
 //COVID data
 let usState = 'New%20Jersey' 
 let covidURL = `https://disease.sh/v3/covid-19/nyt/states/${usState}?lastdays=8`
+let newCases = [];  
+let datesForCases = []; 
 
 //for footer
 let photoLinks = {
@@ -35,7 +32,6 @@ function handleNews(){
             let firstSentence = data.data[i].content.split(".")[0];
             let li = document.createElement('li');
             li.innerHTML = `${firstSentence}. <a href="${data.data[i].readMoreUrl}" target="_blank">Read More</a> `; 
-
             document.querySelector('#news .list').appendChild(li);
         } 
     })
@@ -73,6 +69,7 @@ function handleGeo(callback){
 })
 }
 
+// lat and long in the API URL come from the handleGeo function that calls the weather callback 
 function handleWeather(){
     function cb(){
         fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=${timezone}`)
@@ -96,15 +93,9 @@ function handleWeather(){
                     }
                 }
                 currentWeather = nowTodayTomorrow[0]; 
-
-                //if there's any snow in today's forecast, set the image to snow. Otherwise, set it to current weather at the moment. 
-                if (nowTodayTomorrow[1] == 'snow'){
-                    document.querySelector('body').setAttribute("style",`background-image: url(./img/snow.jpg)`)
-                }
-                else {
-                    document.querySelector('body').setAttribute("style",`background-image: url(./img/${currentWeather}.jpg)`)
-                }
-
+             
+                document.querySelector('body').setAttribute("style",`background-image: url(./img/${currentWeather}.jpg)`)
+                
                 document.getElementById('photocredit').innerHTML = `Background photo by ${photoLinks[currentWeather]}`
 
                 weatherholder.innerHTML = `
@@ -123,9 +114,7 @@ function handleWeather(){
         handleGeo(cb);
     }
 
-    let newCases = []; //move this out
-    let datesForCases = []; //move this out 
-
+// US State in the API URL comes from the handleGeo function that calls the COVID callback     
 function handleCovid(){
     function cb(){
         covidURL = `https://disease.sh/v3/covid-19/nyt/states/${usState}?lastdays=8`
@@ -146,21 +135,11 @@ function handleCovid(){
                 newCases.push(covidArray[i] - covidArray[i-1]);
                 datesForCases.push(data[i].date)
             }
-          //  console.log("cases and dates:")
-            //console.log(newCases);
-           // console.log(datesForCases);
-
-            for (let i=0; i<newCases.length; i++){
-              //  let li = document.createElement('li');
-               // li.textContent = `Date: ${data[i+1].date}; new cases: ${newCases[i]}`; 
-               // document.querySelector('#covid .list').appendChild(li);
-            }
+           
             drawChart();    
-
         })
     }
     handleGeo(cb);
-    
 }
 
 function changeZip(event){
@@ -172,15 +151,14 @@ function changeZip(event){
    handleCovid();
 }
 
+//When the DOM loads, call the functions for each section 
 function handleData (){
     document.getElementById('locationtext').textContent = `Showing data for ${zipcode}. Enter a new zip code to change location.`
     handleCovid(); 
     handleNews(); 
     handleCrypto(); 
     handleWeather(); 
-    loadToDo();
-   // document.querySelector('body').setAttribute("style","background-image: url(./img/clear.jpg)");
-   
+    loadToDo(); 
 }
 
 function addListItem(event){
@@ -244,13 +222,14 @@ function drawChart(){
     let xValues = datesForCases.map( x => x.split("-")[1] + "/" + x.split("-")[2] ); 
 
     //set the dimensions
-    let width= 280;
+    let width= 250; 
     let height= 150;
     let margins= 35;
+    let rightMargin = 10;
 
     let svg = d3.select('#chartdiv')
                 .append('svg')
-                .attr("width", width + margins + margins)
+                .attr("width", width + margins + rightMargin)
                 .attr("height", height + margins + margins)
                 .attr("style", "border: 1px solid black")
                 .attr("style", "background-color: white")
@@ -283,7 +262,7 @@ function drawChart(){
     chartTestData.forEach( (element, index) => {
         //console.log(element + " -> " + (height - yscale(element))); //this is how you get 10%
         let g = svg.append("g")   
-        let barWidth = 25; 
+        let barWidth = 20; 
         g.append("rect")
     // .data(chartTestData)
         .attr("x", (index * (width/chartTestData.length) + (width/chartTestData.length)/2 - barWidth/2) )  
@@ -297,7 +276,8 @@ function drawChart(){
         g.append("text")
         .attr("x", (index * (width/chartTestData.length) + (width/chartTestData.length)/2 - barWidth/2) ) 
         .attr("y", ( yscale(element) )  )
-        .attr("stroke", "#5C5B81")
+        .attr("fill", "#5C5B81")
+       // .attr()
         .text(element)
         .attr("transform", `translate(${margins}, ${margins})`)
     })
