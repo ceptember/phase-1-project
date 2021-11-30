@@ -222,7 +222,7 @@ function drawChart(){
     let xValues = datesForCases.map( x => x.split("-")[1] + "/" + x.split("-")[2] ); 
 
     //set the dimensions
-    let width= 250; 
+    let width= 230; 
     let height= 150;
     let margins= 35;
     let rightMargin = 10;
@@ -288,3 +288,5 @@ document.addEventListener('DOMContentLoaded', handleData);
 document.getElementById('changelocation').addEventListener('submit', changeZip)
 document.getElementById('todoform').addEventListener('submit', addListItem)
 //There is also a 'click' handler added when each to-do item is created
+
+
