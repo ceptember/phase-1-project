@@ -1,3 +1,4 @@
+//https://api.open-meteo.com/v1/forecast?latitude=40.71&longitude=-74.01&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&current_weather=true&temperature_unit=fahrenheit&windspeed_unit=mph&precipitation_unit=inch&timezone=America/New_York
 let zipcode = '10004'
 
 let urlGeo = `https://geocoding-api.open-meteo.com/v1/search?name=${zipcode}`
@@ -27,7 +28,9 @@ let photoLinks = {
 function handleNews(){
     fetch(urlNews)
     .then(response => response.json())
-    .then(data => {            
+    .then(data => {     
+        //temporarily change the numbers here for recording the video because the headlines are weird today... 
+        //  for (i = 3; i < 6; i++){       
         for (i = 0; i < 3; i++){
             let firstSentence = data.data[i].content.split(".")[0];
             let li = document.createElement('li');
@@ -93,11 +96,17 @@ function handleWeather(){
                     }
                 }
                 currentWeather = nowTodayTomorrow[0]; 
-             
-                document.querySelector('body').setAttribute("style",`background-image: url(./img/${currentWeather}.jpg)`)
                 
-                document.getElementById('photocredit').innerHTML = `Background photo by ${photoLinks[currentWeather]}`
-
+                if (nowTodayTomorrow[1] == 'snow'){
+                    document.querySelector('body').setAttribute("style",`background-image: url(./img/snow.jpg)`)   
+                    document.getElementById('photocredit').innerHTML = `Background photo by ${photoLinks.snow}`
+    
+                }
+                else {
+                    document.querySelector('body').setAttribute("style",`background-image: url(./img/${currentWeather}.jpg)`)   
+                    document.getElementById('photocredit').innerHTML = `Background photo by ${photoLinks[currentWeather]}`    
+                }
+               
                 weatherholder.innerHTML = `
                 Showing data for zip code ${zipcode} 
                 <br>
@@ -166,6 +175,18 @@ function addListItem(event){
     event.preventDefault(); 
     let itemText = document.querySelector('#newtodo').value.replace( /[^0-9a-zA-Z\s]/g , " ");
     document.querySelector('#newtodo').value = ""; 
+   
+     // Rendering the user-supplied text in the DOM before sending to the server
+    // This way I can have a working demo of the frontend without a backend
+
+    let li = document.createElement('li'); 
+    let xButton = document.createElement("button")
+    xButton.textContent = "X"
+    xButton.addEventListener('click', (e) => { e.target.parentElement.remove()})
+    li.textContent = itemText ;
+    li.appendChild(xButton)
+    document.querySelector('#todo ul').appendChild(li);
+
     // Object to send to the server 
     let fetchObj = {
         method: 'POST',
@@ -175,21 +196,10 @@ function addListItem(event){
           },
         body: JSON.stringify({item: itemText}) 
     }; 
-
-    // Rendering the user-supplied text in the DOM before sending to the server
-    // This way I can have a working demo of the frontend without a backend
-    
-    let li = document.createElement('li'); 
-    let xButton = document.createElement("button")
-    xButton.textContent = "X"
-    xButton.addEventListener('click', (e) => { e.target.parentElement.remove()})
-    li.textContent = itemText ;
-    li.appendChild(xButton)
-    document.querySelector('#todo ul').appendChild(li);
     
     fetch('http://localhost:3000/todo', fetchObj)
         .then(() => {
-                // If the server is running, I want the items to have the automatically generated IDs, so I'm running loadToDo again 
+                // The delete function should delete from server if it is running, loadToDo again to add this
                 loadToDo();
         })
 }
@@ -260,11 +270,9 @@ function drawChart(){
 
     //Draw bars 
     chartTestData.forEach( (element, index) => {
-        //console.log(element + " -> " + (height - yscale(element))); //this is how you get 10%
         let g = svg.append("g")   
         let barWidth = 20; 
         g.append("rect")
-    // .data(chartTestData)
         .attr("x", (index * (width/chartTestData.length) + (width/chartTestData.length)/2 - barWidth/2) )  
         .attr("y", ( yscale(element) )  ) //top of bar 
         .attr("height",  height - yscale(element)) 
@@ -289,4 +297,12 @@ document.getElementById('changelocation').addEventListener('submit', changeZip)
 document.getElementById('todoform').addEventListener('submit', addListItem)
 //There is also a 'click' handler added when each to-do item is created
 
+document.getElementById('colorize').addEventListener('click', colorize)
+
+function colorize(){
+    let headings = document.querySelectorAll('h3')
+    headings.forEach( heading => heading.style.color = '#' + Math.floor(Math.random()*16777215).toString(16))
+    
+    debugger 
+}
 
